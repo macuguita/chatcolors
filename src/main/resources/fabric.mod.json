@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "chatcolors",
+  "name": "Chat colors",
+  "version": "${version}",
+  "authors": ["macuguita"],
+  "contact": {
+    "sources": "",
+    "issues": ""
+  },
+  "description": "Colored chat",
+  "icon": "assets/icon.png",
+  "license": "MIT",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.macuguita.chatcolors.fabric.FabricClientEntrypoint"
+    ]
+  },
+  "mixins": [
+    "chatcolors.mixins.json"
+  ],
+  "depends": {
+    "fabric-api": "*"
+  }
+}

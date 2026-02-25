@@ -1,0 +1,15 @@
+{
+  "package": "com.macuguita.chatcolors.mixin",
+  "required": true,
+  "minVersion": "0.8",
+  "compatibilityLevel": "${javaVersion}",
+  "plugin": "com.macuguita.chatcolors.ChatColorsMixinPlugin",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "ChatComponentMixin",
+    "ChatListenerMixin",
+    "StyleAccessor"
+  ]
+}

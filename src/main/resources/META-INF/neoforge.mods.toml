@@ -1,0 +1,27 @@
+modLoader = "javafml"
+loaderVersion = "[2,)"
+license = "MIT"
+
+[[mods]]
+modId = "chatcolors"
+displayName = "Chat colors"
+version = "${version}"
+displayURL = ""
+logoFile = "assets/icon.png"
+authors = "macuguita"
+description = '''Colored chat'''
+
+[[mixins]]
+config = "chatcolors.mixins.json"
+
+[[dependencies.chatcolors]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1.181,)"
+ordering = "NONE"
+side = "CLIENT"
+
+[[dependencies.chatcolors]]
+modId = "minecraft"
+type = "required"
+versionRange = "${minecraft}"
