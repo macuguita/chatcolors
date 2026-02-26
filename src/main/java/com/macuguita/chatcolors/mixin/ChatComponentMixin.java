@@ -23,6 +23,7 @@
 package com.macuguita.chatcolors.mixin;
 
 import com.macuguita.chatcolors.ChatColors;
+import com.macuguita.chatcolors.ChatUtil;
 import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -43,6 +44,6 @@ public class ChatComponentMixin {
 	)
 	private Component chatcolors$modifyMessage(Component component) {
 		if (!ChatColors.CONFIG.enableMod) return component;
-		return ChatColors.applyPlayerColor(component);
+		return ChatUtil.applyPlayerColor(component);
 	}
 }
