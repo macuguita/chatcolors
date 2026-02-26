@@ -28,6 +28,7 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.network.chat.contents.PlainTextContents;
 import net.minecraft.network.chat.contents.TranslatableContents;
+
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+// <https://github.com/TerminalMC/ChatNotify/blob/daa3a495ee51e5357a0632ddd744091ac601706f/common/src/main/java/dev/terminalmc/chatnotify/util/text/FormatUtil.java>
 public class FormatUtil {
 
 	private static final Pattern COLOR_CODE_PATTERN =

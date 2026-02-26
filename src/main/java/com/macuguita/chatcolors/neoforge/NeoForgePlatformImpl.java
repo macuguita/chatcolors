@@ -23,12 +23,14 @@
 package com.macuguita.chatcolors.neoforge;
 
 //? neoforge {
-/*import com.macuguita.chatcolors.Platform;
+
+/*import java.nio.file.Path;
+
+import com.macuguita.chatcolors.Platform;
+
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.fml.loading.FMLPaths;
-
-import java.nio.file.Path;
 
 public class NeoForgePlatformImpl implements Platform {
 

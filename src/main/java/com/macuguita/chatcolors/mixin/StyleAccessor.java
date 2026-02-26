@@ -22,18 +22,15 @@
 
 package com.macuguita.chatcolors.mixin;
 
+import org.jspecify.annotations.Nullable;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Invoker;
+
 import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.FontDescription;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.Style;
-
 import net.minecraft.network.chat.TextColor;
-
-import net.minecraft.resources.Identifier;
-
-import org.jspecify.annotations.Nullable;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(Style.class)
 public interface StyleAccessor {

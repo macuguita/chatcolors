@@ -105,6 +105,11 @@ dependencies {
         modLocalRuntime("dev.isxander:yet-another-config-lib:${property("deps.yacl")}-fabric")
     }
 
+    if (true) {
+        modLocalRuntime("maven.modrinth:chatpatches:8.0-alpha.7+1.21.11-fabric")
+        modLocalRuntime("maven.modrinth:chat-heads:AAR2TTo3")
+    }
+
 }
 
 configurations.all {

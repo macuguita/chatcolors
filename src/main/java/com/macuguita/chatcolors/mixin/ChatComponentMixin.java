@@ -23,14 +23,15 @@
 package com.macuguita.chatcolors.mixin;
 
 import com.macuguita.chatcolors.ChatColors;
-
-import net.minecraft.client.gui.components.ChatComponent;
-import net.minecraft.network.chat.Component;
-
+import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
+import net.minecraft.client.gui.components.ChatComponent;
+import net.minecraft.network.chat.Component;
+
+@Debug(export = true)
 @Mixin(ChatComponent.class)
 public class ChatComponentMixin {
 

@@ -36,8 +36,7 @@ public class ChatColorsMixinPlugin implements IMixinConfigPlugin {
 	private static final Supplier<Boolean> TRUE = () -> true;
 
 	private static final Map<String, Supplier<Boolean>> CONDITIONS = ImmutableMap.of(
-			"com.macuguita.chatcolors.mixin.ChatComponentMixin", () -> !Platform.INSTANCE.isModLoaded("chatpatches"),
-			"com.macuguita.chatcolors.mixin.ChatListenerMixin", () -> Platform.INSTANCE.isModLoaded("chatpatches")
+			"com.macuguita.chatcolors.mixin.ChatComponentMixin", () -> true
 	);
 
 	@Override

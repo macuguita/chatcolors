@@ -22,31 +22,27 @@
 
 package com.macuguita.chatcolors;
 
+import java.awt.*;
+import java.util.List;
+import java.util.UUID;
+
 import dev.terminalmc.chatnotify.util.text.FormatUtil;
 import folk.sisby.kaleido.api.WrappedConfig;
 import folk.sisby.kaleido.lib.quiltconfig.api.annotations.Comment;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.contextualbar.LocatorBarRenderer;
-import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextColor;
-
-import net.minecraft.server.players.NameAndId;
-
-import net.minecraft.util.ARGB;
-
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.*;
-import java.util.List;
-import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
+import net.minecraft.server.players.NameAndId;
+import net.minecraft.util.ARGB;
 
 public class ChatColors {
 
@@ -64,11 +60,16 @@ public class ChatColors {
 
 		@Comment("Whether the chat colors should use the same colors as the locator bar.")
 		public boolean useLocatorBarColors = true;
+
+		@Comment("Whether the chat colors should apply to your own messages.")
+		public boolean colorSelf = true;
 	}
 
 	public static void initClient() {
 		LOGGER.info("Initializing {} on {}", MOD_ID, Platform.INSTANCE.loader());
 	}
+
+	private static final Minecraft MINECRAFT = Minecraft.getInstance();
 
 	/**
 	 * @param name
@@ -79,50 +80,45 @@ public class ChatColors {
 		return (float) Math.floorMod(hash, 256) / 255f;
 	}
 
-
 	/**
 	 * @param uuid
 	 * @return hue in the range {@code 0.0f <= hue <= 1.0f}.
 	 * Uses the same implementation as minecraft waypoints
 	 */
 	public static float UUIDToHue(UUID uuid) {
-		// Step 1: generate ARGB color from UUID hash and set brightness
 		int colorInt = ARGB.setBrightness(ARGB.color(255, uuid.hashCode()), 0.9f);
 
-		// Step 2: extract RGB components
 		int r = (colorInt >> 16) & 0xFF;
 		int g = (colorInt >> 8) & 0xFF;
 		int b = colorInt & 0xFF;
 
-		// Step 3: convert RGB to HSV and return hue (0-1)
 		float[] hsv = Color.RGBtoHSB(r, g, b, null);
 		return hsv[0];
 	}
 
 	public static Component applyPlayerColor(Component component) {
-		MutableComponent mutableComponent = MutableComponent.create(component.getContents());
+		MutableComponent mutableComponent = component.copy();
 		mutableComponent = FormatUtil.convertToStyledLiteral(mutableComponent);
-		List<Component> flat = mutableComponent.toFlatList();
 
-		String playerName = null;
-		for (int i = 0; i < flat.size() - 1; i++) {
-			String current = flat.get(i).getString().trim();
-			String next = flat.get(i + 1).getString().trim();
-			if (current.equals("<") && !next.isEmpty() && flat.size() > i + 2 && flat.get(i + 2).getString().trim().startsWith(">")) {
-				playerName = next;
-				break;
-			}
-		}
+		String playerName = extractPlayerName(mutableComponent);
 
 		if (playerName == null) {
 			return applyColorToEmpty(mutableComponent, null, false);
 		}
+
+		LocalPlayer player = MINECRAFT.player;
+		if (!CONFIG.colorSelf && player != null && playerName.equals(player.nameAndId().name()))
+			return component;
+
 		UUID playerUUID = null;
-		for (AbstractClientPlayer player : Minecraft.getInstance().level.players()) {
-			NameAndId nameAndId = player.nameAndId();
-			if (nameAndId.name().equals(playerName)) {
-				playerUUID = nameAndId.id();
-				break;
+		ClientLevel level = MINECRAFT.level;
+		if (level != null) {
+			for (AbstractClientPlayer cPlayer : level.players()) {
+				NameAndId nameAndId = cPlayer.nameAndId();
+				if (nameAndId.name().equals(playerName)) {
+					playerUUID = nameAndId.id();
+					break;
+				}
 			}
 		}
 
@@ -137,38 +133,84 @@ public class ChatColors {
 		return reconstructWithColor(mutableComponent, color, playerName);
 	}
 
-	private static MutableComponent reconstructWithColor(Component component, TextColor color, String playerName) {
-		String full = component.getString();
+	private static @Nullable String extractPlayerName(Component component) {
+		String fromInsertion = findByInsertion(component);
+		if (fromInsertion != null) return fromInsertion;
 
-		if (!full.contains("<" + playerName + ">")) {
-			return applyColorToEmpty(component, color, false);
+		List<Component> flat = component.toFlatList();
+		for (int i = 0; i < flat.size() - 1; i++) {
+			String current = flat.get(i).getString().trim();
+			String next = flat.get(i + 1).getString().trim();
+			if (current.equals("<") && !next.isEmpty()
+					&& flat.size() > i + 2
+					&& flat.get(i + 2).getString().trim().startsWith(">")) {
+				return next;
+			}
 		}
+		return null;
+	}
 
+	private static @Nullable String findByInsertion(Component component) {
+		String insertion = component.getStyle().getInsertion();
+		if (insertion != null && !insertion.isBlank() && isPlayerName(insertion)) {
+			return insertion;
+		}
+		for (Component sibling : component.getSiblings()) {
+			String found = findByInsertion(sibling);
+			if (found != null) return found;
+		}
+		return null;
+	}
+
+	private static boolean isPlayerName(String insertion) {
+		ClientLevel level = MINECRAFT.level;
+		if (level != null) {
+			for (AbstractClientPlayer player : level.players()) {
+				if (player.nameAndId().name().equals(insertion)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	private static MutableComponent reconstructWithColor(Component component, TextColor color, String playerName) {
 		List<Component> flat = component.toFlatList();
 		MutableComponent result = Component.empty().withStyle(component.getStyle());
 
 		for (Component part : flat) {
-			String text = part.getString().trim();
 			Style style = part.getStyle();
-			boolean hasColor = style.getColor() != null;
+			boolean hasColor = hasSignificantColor(style);
+			String raw = part.getString();
+			String trimmed = raw.trim();
+			boolean isBracket = trimmed.equals("<") || trimmed.equals(">");
+			boolean isName = !isBracket && (playerName.equals(style.getInsertion()) || trimmed.equals(playerName));
 
-			boolean isName = text.equals(playerName);
-
-			if (isName && !ChatColors.CONFIG.colorPlayerNames) {
-				result.append(Component.literal(part.getString()).withStyle(style));
+			if (isName && !CONFIG.colorPlayerNames) {
+				result.append(part);
+			} else if (isBracket) {
+				result.append(Component.literal(raw).withStyle(style.withColor(color)));
+			} else if (isName) {
+				result.append(part.copy().withStyle(style.withColor(color)));
 			} else if (!hasColor) {
-				result.append(Component.literal(part.getString()).withStyle(style.withColor(color)));
+				result.append(Component.literal(trimmed).withStyle(style.withColor(color)));
 			} else {
-				result.append(Component.literal(part.getString()).withStyle(style));
+				result.append(part);
 			}
 		}
 
 		return result;
 	}
 
+	private static boolean hasSignificantColor(Style style) {
+		TextColor color = style.getColor();
+		if (color == null) return false;
+		return color.getValue() != 0xFFFFFF;
+	}
+
 	private static MutableComponent applyColorToEmpty(Component component, @Nullable TextColor color, boolean parentHasColor) {
 		MutableComponent result = component.plainCopy();
-		boolean thisHasColor = component.getStyle().getColor() != null;
+		boolean thisHasColor = hasSignificantColor(component.getStyle());
 
 		if (color != null && !thisHasColor && !parentHasColor) {
 			result.withStyle(component.getStyle().withColor(color));

@@ -24,11 +24,11 @@ package com.macuguita.chatcolors.fabric;
 
 //? fabric {
 
+import java.nio.file.Path;
+
 import com.macuguita.chatcolors.Platform;
 
 import net.fabricmc.loader.api.FabricLoader;
-
-import java.nio.file.Path;
 
 public class FabricPlatformImpl implements Platform {
 

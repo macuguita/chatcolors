@@ -23,7 +23,6 @@
 package com.macuguita.chatcolors;
 
 //? fabric {
-
 import com.macuguita.chatcolors.fabric.FabricPlatformImpl;
 //?} else {
 /*import com.macuguita.chatcolors.neoforge.NeoForgePlatformImpl;
