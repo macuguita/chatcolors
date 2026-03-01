@@ -8,15 +8,10 @@
     "sources": "",
     "issues": ""
   },
-  "description": "Colored chat",
+  "description": "Brings some color into the Minecraft chat!",
   "icon": "assets/icon.png",
   "license": "MIT",
   "environment": "client",
-  "entrypoints": {
-    "client": [
-      "com.macuguita.chatcolors.fabric.FabricClientEntrypoint"
-    ]
-  },
   "mixins": [
     "chatcolors.mixins.json"
   ],

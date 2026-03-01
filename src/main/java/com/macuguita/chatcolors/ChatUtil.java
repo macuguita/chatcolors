@@ -22,7 +22,12 @@
 
 package com.macuguita.chatcolors;
 
+import java.awt.*;
+import java.util.List;
+import java.util.UUID;
+
 import dev.terminalmc.chatnotify.util.text.FormatUtil;
+import org.jspecify.annotations.Nullable;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -36,12 +41,6 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.server.players.NameAndId;
 import net.minecraft.util.ARGB;
-
-import org.jspecify.annotations.Nullable;
-
-import java.awt.*;
-import java.util.List;
-import java.util.UUID;
 
 public final class ChatUtil {
 

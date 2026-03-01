@@ -9,7 +9,7 @@ version = "${version}"
 displayURL = ""
 logoFile = "assets/icon.png"
 authors = "macuguita"
-description = '''Colored chat'''
+description = '''Brings some color into the Minecraft chat!'''
 
 [[mixins]]
 config = "chatcolors.mixins.json"

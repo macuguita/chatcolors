@@ -34,25 +34,25 @@ import net.neoforged.fml.loading.FMLPaths;
 
 public class NeoForgePlatformImpl implements Platform {
 
-    @Override
-    public boolean isModLoaded(String modid) {
-        return ModList.get().isLoaded(modid);
-    }
+	@Override
+	public boolean isModLoaded(String modid) {
+		return ModList.get().isLoaded(modid);
+	}
 
-    @Override
-    public String loader() {
-        return "neoforge";
-    }
+	@Override
+	public String loader() {
+		return "neoforge";
+	}
 
-    @Override
-    public Path getConfigDir() {
-        return FMLPaths.CONFIGDIR.get();
-    }
+	@Override
+	public Path getConfigDir() {
+		return FMLPaths.CONFIGDIR.get();
+	}
 
-    @Override
-    public boolean isDevelopment() {
-        return !FMLEnvironment.isProduction();
-    }
+	@Override
+	public boolean isDevelopment() {
+		return !FMLEnvironment.isProduction();
+	}
 
 }
 *///?}

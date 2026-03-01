@@ -16,9 +16,16 @@
 
 package dev.terminalmc.chatnotify.util.text;
 
+import java.util.ArrayList;
+import java.util.IllegalFormatException;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.macuguita.chatcolors.ChatColors;
 import com.macuguita.chatcolors.Platform;
 import com.macuguita.chatcolors.mixin.StyleAccessor;
+import org.jetbrains.annotations.Nullable;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.locale.Language;
@@ -28,14 +35,6 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.network.chat.contents.PlainTextContents;
 import net.minecraft.network.chat.contents.TranslatableContents;
-
-import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.IllegalFormatException;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 // <https://github.com/TerminalMC/ChatNotify/blob/daa3a495ee51e5357a0632ddd744091ac601706f/common/src/main/java/dev/terminalmc/chatnotify/util/text/FormatUtil.java>
 public class FormatUtil {
@@ -98,7 +97,7 @@ public class FormatUtil {
 			ChatColors.LOGGER.warn("Text:");
 			ChatColors.LOGGER.warn("{}", text.getString());
 			ChatColors.LOGGER.warn("Tree:");
-			ChatColors.LOGGER.warn("{}", text.toString());
+			ChatColors.LOGGER.warn("{}", text);
 		}
 
 		// Detach siblings
@@ -196,7 +195,7 @@ public class FormatUtil {
 					sb.append(s);
 				}
 				sb.append("]");
-				ChatColors.LOGGER.warn("{}", sb.toString());
+				ChatColors.LOGGER.warn("{}", sb);
 			}
 
 			if (split.isEmpty()) {
@@ -229,7 +228,7 @@ public class FormatUtil {
 							ChatColors.LOGGER.warn("Text:");
 							ChatColors.LOGGER.warn("{}", argComponent.getString());
 							ChatColors.LOGGER.warn("Tree:");
-							ChatColors.LOGGER.warn("{}", argComponent.toString());
+							ChatColors.LOGGER.warn("{}", argComponent);
 						}
 						siblings.add(argComponent);
 					} else {

@@ -22,32 +22,10 @@
 
 package com.macuguita.chatcolors;
 
-import java.awt.*;
-import java.util.List;
-import java.util.UUID;
-
-import dev.terminalmc.chatnotify.util.text.FormatUtil;
 import folk.sisby.kaleido.api.WrappedConfig;
 import folk.sisby.kaleido.lib.quiltconfig.api.annotations.Comment;
-
-import net.minecraft.network.chat.ClickEvent;
-
-import net.minecraft.network.chat.HoverEvent;
-
-import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.TextColor;
-import net.minecraft.server.players.NameAndId;
-import net.minecraft.util.ARGB;
 
 public class ChatColors {
 
@@ -74,9 +52,5 @@ public class ChatColors {
 		@Comment("this should be used when the server changes your chat color to something that is")
 		@Comment("not the default one, e.g. Hypixel making your chat gray")
 		public boolean overrideAllColor = false;
-	}
-
-	public static void initClient() {
-		LOGGER.info("Initializing {} on {}", MOD_ID, Platform.INSTANCE.loader());
 	}
 }

@@ -22,22 +22,21 @@
 
 package com.macuguita.chatcolors;
 
+import java.nio.file.Path;
+
 //? fabric {
 import com.macuguita.chatcolors.fabric.FabricPlatformImpl;
-//?} else {
+//?} neoforge {
 /*import com.macuguita.chatcolors.neoforge.NeoForgePlatformImpl;
- *///?}
-
-import java.nio.file.Path;
+*///?}
 
 public interface Platform {
 
 	//? fabric {
 	Platform INSTANCE = new FabricPlatformImpl();
-	//?}
-	//? neoforge {
+	//?} neoforge {
 	/*Platform INSTANCE = new NeoForgePlatformImpl();
-	 *///?}
+	*///?}
 
 
 	boolean isModLoaded(String modid);
